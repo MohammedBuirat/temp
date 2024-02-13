@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class SeedData {
-    public static void SeedData(){
+    public static void SeedData() {
         int dataSeedNumber = readNumberFromFile();
-        if(dataSeedNumber == 1){
+        if (dataSeedNumber == 1) {
             return;
         }
 
@@ -19,6 +19,8 @@ public class SeedData {
         seedTweets();
         seedTweetHate();
         seedTweetTopic();
+        seedDate();
+        seedSummaries();
     }
 
 
@@ -45,7 +47,7 @@ public class SeedData {
         }
     }
 
-    private static void seedCountries(){
+    private static void seedCountries() {
         String csvFile = "C:\\Users\\ASUS\\Desktop\\countries_modified.csv";
         String line;
         String cvsSplitBy = ",";
@@ -55,6 +57,7 @@ public class SeedData {
                 String[] data = line.split(cvsSplitBy);
                 int id = Integer.parseInt(data[5]); // Assuming id is the last field
                 Country country = new Country(id, data[0], data[1], data[2], data[4]);
+                CountryOffensive countryOffensive = new CountryOffensive(id, 0, 0, 0);
                 System.out.println(country.getId());
             }
         } catch (IOException e) {
@@ -62,7 +65,7 @@ public class SeedData {
         }
     }
 
-    private static void seedTweets(){
+    private static void seedTweets() {
         String csvFile = "C:\\Users\\ASUS\\Desktop\\text_country_date.csv";
         String line;
         String cvsSplitBy = ",";
@@ -160,6 +163,20 @@ public class SeedData {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void seedDate() {
+        LocalDate date = LocalDate.of(2015, 1, 1);
+        LocalDate last = LocalDate.now();
+        while (date.compareTo(last) <= 0) {
+            DateOffensive summary = new DateOffensive(date, 0, 0, 0);
+            date = date.plusDays(1);
+        }
+    }
+
+    private static void seedSummaries() {
+        var offensiveSummary = new OffensiveSummary(0, 0, 0);
+        var topicSummary = new TopicSummary(0,0,0,0,0);
     }
 
 }
